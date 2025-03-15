@@ -1,8 +1,10 @@
+import {Header} from './components';
+
 function App() {
   return (
-    <>
-      <h1 className='text-3xl text-red-500'>Challenge - PPI</h1>
-    </>
+    <div className='min-h-screen'>
+      <Header />
+    </div>
   );
 }
 
