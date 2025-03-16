@@ -110,8 +110,8 @@ export const ExchangeCard = ({
                 : `${Number(amount).toFixed(2)} ${amount === '1' ? 'Euro' : 'Euros'} =`}
               <br />
               {fromCurrency === 'USD'
-                ? `${(Number(amount) * Number(lastRateDollar)).toFixed(2)} Euros`
-                : `${(Number(amount) * Number(lastRateEuro)).toFixed(2)} US Dollars`}
+                ? `${(Number(amount) * Number(lastRateDollar)).toFixed(7)} Euros`
+                : `${(Number(amount) * Number(lastRateEuro)).toFixed(7)} US Dollars`}
             </div>
             <div className='text-[16px] text-[#757575] font-normal leading-8 mt-1'>
               {fromCurrency === 'USD'
