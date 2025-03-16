@@ -1,9 +1,9 @@
-import exchange from '../../assets/icons/Button.svg';
 import {CurrencyConversionInfo} from '../currency-info/CurrencyConversionInfo';
+import exchange from '../../assets/icons/Button.svg';
+import {Rates} from '../../interfaces/rates.interface';
 
 interface ExchangeCardProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  rates: any;
+  rates: Rates;
   amount: string;
   setAmount: (amount: string) => void;
   fromCurrency: string;
@@ -30,9 +30,9 @@ export const ExchangeCard = ({
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    // Remove commas before validation
+
     const rawValue = value.replace(/,/g, '');
-    // Allow empty input and numbers with decimals
+
     if (rawValue === '' || /^\d*\.?\d*$/.test(rawValue)) {
       setAmount(rawValue);
     }

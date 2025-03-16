@@ -1,10 +1,11 @@
 import {useEffect, useState} from 'react';
 import {ExchangeCard, Header, Spinner} from './components';
 import {getLatestRates} from './services/currency.services';
+import {Rates} from './interfaces/rates.interface';
 
 function App() {
   const [loading, setLoading] = useState(true);
-  const [rates, setRates] = useState({});
+  const [rates, setRates] = useState<Rates>({date: new Date(), base: '', rates: {USD: 0, EUR: 0}});
   const [amount, setAmount] = useState('1');
   const [fromCurrency, setFromCurrency] = useState('USD');
   const [toCurrency, setToCurrency] = useState('EUR');
