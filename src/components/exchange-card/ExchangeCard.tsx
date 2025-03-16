@@ -1,4 +1,5 @@
 import exchange from '../../assets/icons/Button.svg';
+import {CurrencyConversionInfo} from '../currency-info/CurrencyConversionInfo';
 
 interface ExchangeCardProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -20,7 +21,8 @@ export const ExchangeCard = ({
   toCurrency,
   setToCurrency,
 }: ExchangeCardProps) => {
-  console.log(rates);
+  const lastRateEuro = rates.rates.USD;
+  const lastRateDollar = rates.rates.EUR / rates.rates.USD;
 
   const formatAmount = (value: string) => {
     return value.replace(/[^\d.]/g, '');
@@ -103,11 +105,18 @@ export const ExchangeCard = ({
         <div className='mt-6 px-4 lg:px-10 lg:mt-[70px]'>
           <div>
             <div className='text-[24px] font-semibold leading-8 lg:text-[32px]'>
-              1.00 Euro = <br />
-              {rates.rates.USD.toFixed(2)} US Dollars
+              {fromCurrency === 'USD'
+                ? `${Number(amount).toFixed(2)} ${amount === '1' ? 'US Dollar' : 'US Dollars'} =`
+                : `${Number(amount).toFixed(2)} ${amount === '1' ? 'Euro' : 'Euros'} =`}
+              <br />
+              {fromCurrency === 'USD'
+                ? `${(Number(amount) * Number(lastRateDollar)).toFixed(2)} Euros`
+                : `${(Number(amount) * Number(lastRateEuro)).toFixed(2)} US Dollars`}
             </div>
             <div className='text-[16px] text-[#757575] font-normal leading-8 mt-1'>
-              1 USD = {(rates.rates.EUR / rates.rates.USD).toFixed(2)} EUR
+              {fromCurrency === 'USD'
+                ? `${(Number(amount) * Number(lastRateDollar)).toFixed(2)} EUR = ${Number(amount).toFixed(2)} USD `
+                : `${(Number(amount) * Number(lastRateEuro)).toFixed(2)} USD = ${Number(amount).toFixed(2)} EUR`}
             </div>
           </div>
 
@@ -120,35 +129,14 @@ export const ExchangeCard = ({
             </div>
 
             <div className='hidden lg:block lg:mt-3'>
-              <p className='text-[12px] font-light leading-8'>
-                Euro to US Dollar conversion — Last updated Dec 15, 2022, 19:17 UTC
-              </p>
+              <CurrencyConversionInfo />
             </div>
           </div>
         </div>
       </div>
 
       <div className='mt-4 px-10 lg:hidden'>
-        <p className='text-[12px] font-light leading-6'>
-          <a
-            href='https://www.xe.com/currency/eur-euro/'
-            target='_blank'
-            rel='noopener noreferrer'
-            className='underline'
-          >
-            Euro
-          </a>{' '}
-          to{' '}
-          <a
-            href='https://www.xe.com/currency/usd-us-dollar/'
-            target='_blank'
-            rel='noopener noreferrer'
-            className='underline'
-          >
-            US Dollar
-          </a>{' '}
-          conversion — Last updated Dec 15, 2022, 19:17 UTC
-        </p>
+        <CurrencyConversionInfo />
       </div>
     </>
   );
