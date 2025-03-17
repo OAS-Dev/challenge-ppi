@@ -25,7 +25,19 @@ export const ExchangeCard = ({
   const lastRateDollar = rates.rates.EUR / rates.rates.USD;
 
   const formatAmount = (value: string) => {
-    return value.replace(/[^\d.]/g, '');
+    const numericValue = value.replace(/[^\d.]/g, '');
+    if (!numericValue) return '';
+    
+    const parts = numericValue.split('.');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return parts.join('.');
+  };
+
+  const formatDisplayNumber = (value: number) => {
+    return value.toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 7
+    });
   };
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -106,18 +118,18 @@ export const ExchangeCard = ({
           <div>
             <div className='text-[24px] font-semibold leading-8 lg:text-[32px]'>
               {fromCurrency === 'USD'
-                ? `${Number(amount).toFixed(2)} ${amount === '1' ? 'US Dollar' : 'US Dollars'} =`
-                : `${Number(amount).toFixed(2)} ${amount === '1' ? 'Euro' : 'Euros'} =`}
+                ? `${formatDisplayNumber(Number(amount))} ${amount === '1' ? 'US Dollar' : 'US Dollars'} =`
+                : `${formatDisplayNumber(Number(amount))} ${amount === '1' ? 'Euro' : 'Euros'} =`}
               <br />
               {fromCurrency === 'USD'
-                ? `${(Number(amount) * Number(lastRateDollar)).toFixed(7)} Euros`
-                : `${(Number(amount) * Number(lastRateEuro)).toFixed(7)} US Dollars`}
+                ? `${formatDisplayNumber(Number(amount) * Number(lastRateDollar))} Euros`
+                : `${formatDisplayNumber(Number(amount) * Number(lastRateEuro))} US Dollars`}
             </div>
 
             <div className='text-[16px] text-[#757575] font-normal leading-8 mt-1'>
               {fromCurrency === 'USD'
-                ? `${Number(amount).toFixed(2)} EUR = ${(Number(amount) * Number(lastRateEuro)).toFixed(2)} USD`
-                : `${Number(amount).toFixed(2)} USD = ${(Number(amount) * Number(lastRateDollar)).toFixed(2)} EUR`}
+                ? `${formatDisplayNumber(Number(amount))} EUR = ${formatDisplayNumber(Number(amount) * Number(lastRateEuro))} USD`
+                : `${formatDisplayNumber(Number(amount))} USD = ${formatDisplayNumber(Number(amount) * Number(lastRateDollar))} EUR`}
             </div>
           </div>
 
